@@ -11,7 +11,7 @@ df = pd.read_csv(file_path)
 #  Clean Data
 # Normalize column names
 df.columns = df.columns.str.strip()
-print("🔍 Available columns:", df.columns.tolist())
+print(" Available columns:", df.columns.tolist())
 
 # Drop rows with missing Event or User ID
 df = df.dropna(subset=["event name", "total users"])
@@ -46,8 +46,8 @@ event_counts.columns = ["event name", "total users"]
 df.to_csv("cleaned_event_data.csv", index=False)
 event_counts.to_csv("event_user_counts.csv", index=False)
 
-print("✅ Cleaned data saved as 'cleaned_event_data.csv'")
-print("✅ Event count saved as 'event_user_counts.csv'")
+print("Cleaned data saved as 'cleaned_event_data.csv'")
+print("Event count saved as 'event_user_counts.csv'")
 
 #  Plot the chart
 plt.figure(figsize=(10, 6))
@@ -60,5 +60,5 @@ plt.tight_layout()
 
 #  Save chart
 plt.savefig("event_user_counts.png")
-print("📊 Chart saved as 'event_user_counts.png'")
+print("Chart saved as 'event_user_counts.png'")
 plt.show()
