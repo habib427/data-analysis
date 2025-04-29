@@ -1,29 +1,24 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load both cleaned event data files
 file_old = "C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/cleaned_event_data1-11April.csv"
 file_new = "C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/cleaned_event_data12-23April.csv"
 
 df_old = pd.read_csv(file_old)[["event name", "total users"]].copy()
 df_new = pd.read_csv(file_new)[["event name", "total users"]].copy()
 
-# Rename columns for clarity
 df_old.columns = ["event name", "Users Old"]
 df_new.columns = ["event name", "Users New"]
 
-# Merge data on event name
 merged = pd.merge(df_old, df_new, on="event name", how="outer").fillna(0)
 
-# Ensure numeric values
 merged["Users Old"] = merged["Users Old"].astype(int)
 merged["Users New"] = merged["Users New"].astype(int)
 
-# Calculate change
 merged["Change"] = merged["Users New"] - merged["Users Old"]
 merged["% Change"] = (merged["Change"] / merged["Users Old"].replace(0, 1)) * 100
 
-# Reorder by selected event sequence
+# select event sequence
 selected_events = [
     "splash_screen",
     "main_screen",
@@ -46,17 +41,17 @@ merged.to_csv("C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/event_progress
 print("Comparison saved to 'event_progression_comparison_april.csv'")
 
 
-# chart with conditional colors
+# chart
 plt.figure(figsize=(12, 6))
 
 colors = merged["Change"].apply(lambda x: "green" if x > 0 else ("red" if x < 0 else "blue"))
-
-plt.bar(merged["event name"], merged["Change"], color=colors)
-
+bar_width = 0.3
+x_positions = range(len(merged["event name"]))
+plt.bar(x_positions, merged["Change"], color=colors, width=bar_width)
 plt.title("Event User Progression (1st April - 23rd April)")
 plt.xlabel("Event Name")
 plt.ylabel("User Count Change")
-plt.xticks(rotation=45, ha='right')
+plt.xticks(ticks=x_positions, labels=merged["event name"], rotation=45, ha='right')
 plt.axhline(0, color='black', linewidth=0.8)  # horizontal line at y=0
 plt.tight_layout()
 plt.savefig("C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/event_progression_chart.png")
