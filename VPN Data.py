@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import os
 
  # Set file path
-file_path = "C:/Users/HABIB/PycharmProjects/RandomWebsites/all Events all versions.csv"  # you can also replace this with input() or sys.argv
+file_path = "C:/Users/HABIB/PycharmProjects/RandomWebsites/24 to 1st may.csv"  # you can also replace this with input() or sys.argv
 
 #  Load Excel
 df = pd.read_csv(file_path)
@@ -19,15 +19,14 @@ df = df.dropna(subset=["event name", "total users"])
 # Convert to lowercase for consistency
 df["event name"] = df["event name"].str.strip().str.lower()
 
-# Optional: Make sure User ID is string (if needed)
-# df["Total users"] = df["Total users"].astype(str)
-
 #  nly Specific Events
 selected_events = [
     "splash_screen",
     "main_screen",
     "connect_vpn",
     "failed_to_connect",
+    "connect_shadowsocks",
+    "failed_to_connect_shadowsocks",
     "connection_success_screen",
     "servers_screen",
     "app_remove",
@@ -43,22 +42,22 @@ event_counts = df.groupby("event name")["total users"].count().reset_index()
 event_counts.columns = ["event name", "total users"]
 
 #  Save cleaned data
-df.to_csv("cleaned_event_data.csv", index=False)
+df.to_csv("cleaned_event_data24 to 1st may.csv", index=False)
 event_counts.to_csv("event_user_counts.csv", index=False)
 
-print("Cleaned data saved as 'cleaned_event_data.csv'")
+print("Cleaned data saved as 'cleaned_event_data24 to 1st may.csv'")
 print("Event count saved as 'event_user_counts.csv'")
 
-#  Plot the chart
-plt.figure(figsize=(10, 6))
-plt.bar(event_counts["event name"], event_counts["total users"], color="skyblue")
-plt.title("Total Users per Event")
-plt.xlabel("Event name")
-plt.ylabel("Total Users")
-plt.xticks(rotation=45)
-plt.tight_layout()
-
-#  Save chart
-plt.savefig("event_user_counts.png")
-print("Chart saved as 'event_user_counts.png'")
-plt.show()
+# #  Plot the chart
+# plt.figure(figsize=(10, 6))
+# plt.bar(event_counts["event name"], event_counts["total users"], color="skyblue")
+# plt.title("Total Users per Event")
+# plt.xlabel("Event name")
+# plt.ylabel("Total Users")
+# plt.xticks(rotation=45)
+# plt.tight_layout()
+#
+# #  Save chart
+# plt.savefig("event_user_counts.png")
+# print("Chart saved as 'event_user_counts.png'")
+# plt.show()
