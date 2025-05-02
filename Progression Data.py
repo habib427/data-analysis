@@ -1,8 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-file_old = "C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/cleaned_event_data1-11April.csv"
-file_new = "C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/cleaned_event_data12-23April.csv"
+file_old = "C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/cleaned_event_data16-23 April.csv"
+file_new = "C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/cleaned_event_data24 to 1st may.csv"
 
 df_old = pd.read_csv(file_old)[["event name", "total users"]].copy()
 df_new = pd.read_csv(file_new)[["event name", "total users"]].copy()
@@ -15,6 +15,21 @@ merged = pd.merge(df_old, df_new, on="event name", how="outer").fillna(0)
 merged["Users Old"] = merged["Users Old"].astype(int)
 merged["Users New"] = merged["Users New"].astype(int)
 
+# reverse_events = ["failed_to_connect", "failed_to_connect_shadowsocks"]
+
+# Calculate change and % change conditionally
+# merged["Change"] = merged.apply(
+#     lambda row: row["Users Old"] - row["Users New"]
+#     if row["event name"] in reverse_events
+#     else row["Users New"] - row["Users Old"],
+#     axis=1
+# )
+#
+# merged["% Change"] = merged.apply(
+#     lambda row: (row["Change"] / row["Users Old"]) * 100 if row["Users Old"] != 0 else 0,
+#     axis=1
+# )
+
 merged["Change"] = merged["Users New"] - merged["Users Old"]
 merged["% Change"] = (merged["Change"] / merged["Users Old"].replace(0, 1)) * 100
 
@@ -23,13 +38,15 @@ selected_events = [
     "splash_screen",
     "main_screen",
     "connect_vpn",
-    "connection_success_screen",
     "failed_to_connect",
+    "connect_shadowsocks",
+    "failed_to_connect_shadowsocks",
+    "connection_success_screen",
     "servers_screen",
     "app_remove",
     "hit_url1",
     "url1_failed",
-    "hit_firebase"
+    "hit_firebase",
 ]
 
 merged = merged[merged["event name"].isin(selected_events)]
@@ -48,7 +65,7 @@ colors = merged["Change"].apply(lambda x: "green" if x > 0 else ("red" if x < 0 
 bar_width = 0.3
 x_positions = range(len(merged["event name"]))
 plt.bar(x_positions, merged["Change"], color=colors, width=bar_width)
-plt.title("Event User Progression (1st April - 23rd April)")
+plt.title("Event User Progression (16th April - 1st May)")
 plt.xlabel("Event Name")
 plt.ylabel("User Count Change")
 plt.xticks(ticks=x_positions, labels=merged["event name"], rotation=45, ha='right')
