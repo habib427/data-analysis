@@ -34,7 +34,6 @@ df = df[df["event name"].isin(selected_events)]
 event_counts = df.groupby("event name")["total users"].count().reset_index()
 event_counts.columns = ["event name", "total users"]
 
-#  Save cleaned data
 df.to_csv("cleaned_event_data24 to 1st may.csv", index=False)
 event_counts.to_csv("event_user_counts.csv", index=False)
 
