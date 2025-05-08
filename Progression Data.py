@@ -16,7 +16,6 @@ merged["Users Old"] = merged["Users Old"].astype(int)
 merged["Users New"] = merged["Users New"].astype(int)
 
 # reverse_events = ["failed_to_connect", "failed_to_connect_shadowsocks"]
-
 # Calculate change and % change conditionally
 # merged["Change"] = merged.apply(
 #     lambda row: row["Users Old"] - row["Users New"]
@@ -33,7 +32,7 @@ merged["Users New"] = merged["Users New"].astype(int)
 merged["Change"] = merged["Users New"] - merged["Users Old"]
 merged["% Change"] = (merged["Change"] / merged["Users Old"].replace(0, 1)) * 100
 
-# select event sequence
+
 selected_events = [
     "splash_screen",
     "main_screen",
@@ -53,12 +52,12 @@ merged = merged[merged["event name"].isin(selected_events)]
 merged["event name"] = pd.Categorical(merged["event name"], categories=selected_events, ordered=True)
 merged = merged.sort_values("event name")
 
-# Save to CSV
+
 merged.to_csv("C:/Users/HABIB/PycharmProjects/RandomWebsites/prog/event_progression_comparison_april.csv", index=False)
 print("Comparison saved to 'event_progression_comparison_april.csv'")
 
 
-# chart
+
 plt.figure(figsize=(12, 6))
 
 colors = merged["Change"].apply(lambda x: "green" if x > 0 else ("red" if x < 0 else "blue"))
